@@ -9,8 +9,12 @@
   <body>
     <!-- STARTER SCREEN -->
   <!-- <div class="container"> -->
-    <div id="start-screen">
+ <div id="container">
+    <div id="start-screen" class="game-box">
       <h1><span>S</span><span>n</span><span>a</span><span>c</span><span>k</span> <span> </span> <span>y</span><span>o</span><span>u</span><span>r</span> <span> </span> <span>f</span><span>a</span><span>t</span><span>e</span></h1>
+      </div>
+    <div id="zodiac-option" class="game-box">
+        <h1>Feeling cosmic today ?</h1>
       <ul id="zodiac-sign">
         <li> &#9800  Aries</li>
         <li> &#9801 Taurus</li>
@@ -27,21 +31,70 @@
       </ul>
       <button id="next-btn">Next</button>
     </div>
+    
     <!-- RULES -->
-    <div id="game-rules">
+    <div id="game-rules" class="game-box">
+      <div id="rules">
+      <h2>Goal</h2>
+      <p>Catch 15 Astral treasures to discover your fate</p>
+      </div>
+      <div id="infos">
+        <p>Duration : 60 secondes</p> 
+        <div id="infos-p" class="info">
+        <p>Chances :
+          <div id="infos-img" class="info"></div>
+        <img src="./img/life.png" alt="life">
+        <img src="./img/life.png" alt="life">
+        <img src="./img/life.png" alt="life">
+        </p>
+        </div>
+      </div>
+      <div class="ingredients">
+        <div id="rotten">
+          <h3>Rotten cosmic -1 </h3>
+          <img src="./img/skull.png" alt="skull">
+          <img src="./img/bomb.png" alt="bomb">
+          <img src="./img/red-pepper.png" alt="red-pepper">
+        </div>
+        <div id="ordinary">
+          <h3>Ordinary Orb -1 </h3>
+          <img src="./img/sock.png" alt="sock">
+          <img src="./img/cheese.png" alt="cheese">
+          <img src="./img/tooth.png" alt="tooth">
+        </div>
+        <div id="astral">
+          <h3>Astral treasure +1</h3>
+          <img src="./img/leaf.png" alt="leaf">
+          <img src="./img/moon.png" alt="moon">
+          <img src="./img/crystal.png" alt="crystal">
+        </div>
+      </div>
+
       <button id="start-btn">Start</button>
     </div>
     <!-- GAME SCREEN -->
-    <div id="game-screen">
-      <div id="game-box">
-        <h2>Feeling cosmic today ?</h2>
+    <div id="game-screen" class="game-box">
+      <div id="game-infos">
+        <div class="infos-left">
+          <p>Rotten Cosmic</p>
+          <p>Ordinary Orb</p>
+          <p>Astral Treasure</p>
+        </div>
+        <div class="infos-left">
+          <p>❤️ Chances : <span id="chances">3</span></p>
+          <p> ⏱ Time : <span id="time">60</span></p>
+        </div>
       </div>
+      <div id="game-area"></div>
+        
     </div>
     <!-- GAME SCREEN BOX -->
-    <div id="game-over">
-      <h2>Game over</h2>
+    <div id="game-over" class="game-box">
+      <h2><span>G</span><span>A</span><span>M</span><span>E</span><span>&nbsp;</span><span>O</span><span>V</span><span>E</span><span>R</span></h2>
       <button id="restart-btn">Play again</button>
     </div>
   </div>
+</div>
+</div>
   </body>
 </html>
