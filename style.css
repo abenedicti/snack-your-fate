@@ -92,7 +92,7 @@ button {
 }
 .game-box {
   position: absolute; /* toutes les sections superposées */
-  display: flex;
+  display: none;
   flex-direction: column;
   padding: 0;
   justify-content: center;
@@ -103,20 +103,18 @@ button {
   border-radius: 5px;
   border: solid 1px #ec6202;
   color: whitesmoke;
+  user-select: none;
 }
 
 #start-screen {
-  display: none;
-  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 h1 {
   font-size: 3.5rem;
   letter-spacing: 5px;
-  color: #01011f;
 }
 
 #zodiac-option {
-  display: none;
   z-index: 0;
 }
 
@@ -147,8 +145,10 @@ h1 {
   transform: scale(1.05);
   background-color: #3a1b5c;
 }
-#games-rules {
-  display: none;
+#zodiac-sign li.selected {
+  transform: scale(1.08);
+  background-color: #3a1b5c;
+  border: whitesmoke 1px solid;
 }
 
 #rules {
@@ -210,10 +210,11 @@ p {
 
 #game-screen {
   display: flex;
+  position: relative;
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
-  z-index: 10;
+  z-index: 1;
 }
 #game-infos {
   display: flex;
@@ -229,7 +230,7 @@ p {
 }
 
 #game-over {
-  display: none;
+  /* display: none; */
   z-index: 0;
 }
 #game-over h2 {
