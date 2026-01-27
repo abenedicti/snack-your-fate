@@ -92,6 +92,7 @@ button {
 }
 .game-box {
   position: absolute; /* toutes les sections superposées */
+  overflow: hidden;
   display: none;
   flex-direction: column;
   padding: 0;

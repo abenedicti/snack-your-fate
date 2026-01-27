@@ -19,20 +19,20 @@ class Cauldron {
     this.move = 1.2;
   }
   rightMove() {
-    this.x += 40;
+    this.x += 10;
     this.node.style.left = `${this.x}px`;
+    const limitScreen = gameScreen.offsetWidth - this.width;
+    if (this.x > limitScreen) this.x = limitScreen;
   }
   leftMove() {
-    this.x -= 40;
+    this.x -= 10;
     this.node.style.left = `${this.x}px`;
+    if (this.x < 0) this.x = 0;
   }
   zoneMove() {
-    if (this.x < 0) {
-      this.x = 0;
+    if (this.x > 0) {
+      this.x -= this.move;
+      this.node.style.left = `${this.x}px`;
     }
-    if (this.x > gameScreen.offsetWidth - this.width) {
-      this.x = gameScreen.offsetWidth - this.width;
-    }
-    this.node.style.left = `${this.x}px`;
   }
 }

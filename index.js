@@ -19,6 +19,10 @@ const restartBtn = document.querySelector('#restart-btn');
 
 //* GLOBAL NAME VARIABLES
 cauldronObj = new Cauldron();
+itemsObj = new Items();
+let items = [];
+let timerForWaveLetter = 0;
+
 //* GLOBAL GAME FUNCTIONS
 
 //! SCREENS INTERVAL SHOW AND INTERACTION
@@ -35,11 +39,36 @@ cauldronObj = new Cauldron();
 //   showScreen(zodiacScreen);
 // }, 3000);
 
-function startGame() {}
-function gameLoop() {
-  cauldronObj.leftMove();
+// - items always move down (from top to bottom) =  decrease y
+function startGame() {
+  cauldronObj = new Cauldron();
+  itemsObj = new Items();
+  // game timer
 }
+function gameLoop() {}
 
+function itemSpawn() {
+  // set interval pour chaque item
+  // distance entre les items
+  // random item position
+}
+function itemDespawn() {
+  // lorsque les ingredients sont tombés, arrêter l'exécution
+  // enelever les éléments du DOM
+}
+function collisionItems() {
+  // pour chaque collision avec le cauldron, ajouter une condition en fonction de l'ingrédient percuté et le nombre de point (incrémenter/décrémenter le compteur)
+}
+function checkItemCollision() {
+  // définir l'endroit de la collison
+}
+function gameOver() {
+  //  clear interval
+}
+function replay() {
+  //
+}
+function titlesMovement() {}
 //! EVENT LISTENER
 // show the rules screen after clicking next-btn
 // zodiacBtn.addEventListener('click', () => {
@@ -72,19 +101,22 @@ document.addEventListener('keydown', (event) => {
   if (event.key === 'ArrowRight') {
     cauldronObj.rightMove();
   }
+  // if (cauldronObj.x > gameScreen.offsetWidth) {
+  //   zoneMove();
+  // }
 });
 
 /// PLANNING SESSION
 
 /*
 /// ZODIAC 
-- li have to be connected with the horoscope
+- li have to be connected with the horoscope ✅
 /// Cauldron object
-- properties (x, y, w, h, speed)
-- keypress
+- properties (x, y, w, h, speed) ✅
+- keypress ✅
 
 /// ItemSpawn (set timer)
-- items always move down (from top to bottom) =  decrease y
+- items always move down (from top to bottom) =  decrease y 
 - speed increase every 10sec
 - collision when item touch the cauldron (top and sides)
 - collision good item +1
@@ -95,10 +127,10 @@ document.addEventListener('keydown', (event) => {
 
 
 /// Items objects
-- properties(x, y, x, h, speed)
+- properties(x, y, x, h, speed) ✅
 - come by 4 (differents items)
-- randomize the number of items per fall
-- randomize the type of items 
+- randomize the number of items per fall ✅
+- randomize the type of items ✅
 
 
 /// EXTRA FUNCTIONALITIES
