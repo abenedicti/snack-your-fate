@@ -6,6 +6,8 @@ const zodiacScreen = document.querySelector('#zodiac-option');
 const rulesScreen = document.querySelector('#game-rules');
 const gameScreen = document.querySelector('#game-screen');
 const gameOverScreen = document.querySelector('#game-over');
+const scoreDisplay = document.querySelector('#score');
+const chancesDisplay = document.querySelector('#chances');
 // to hide and show screens
 const screens = document.querySelectorAll('.game-box');
 // to select the zodiac sign
@@ -18,10 +20,14 @@ const startBtn = document.querySelector('#start-btn');
 const restartBtn = document.querySelector('#restart-btn');
 
 //* GLOBAL NAME VARIABLES
-cauldronObj = new Cauldron();
-itemsObj = new Items();
-let items = [];
-let timerForWaveLetter = 0;
+const itemsObj = new Items();
+let itemsArr = [];
+let cauldronObj = null;
+let itemsInterval = null;
+let itemsSpanInterval = null;
+let score = 0;
+let scoreMax = 15;
+let chances = 3;
 
 //* GLOBAL GAME FUNCTIONS
 
@@ -39,32 +45,78 @@ let timerForWaveLetter = 0;
 //   showScreen(zodiacScreen);
 // }, 3000);
 
-// - items always move down (from top to bottom) =  decrease y
 function startGame() {
   cauldronObj = new Cauldron();
-  itemsObj = new Items();
-  // game timer
+  for (let i = 0; i < 5; i++) {
+    itemsArr.push(new Items());
+  }
 }
-function gameLoop() {}
-
-function itemSpawn() {
-  // set interval pour chaque item
-  // distance entre les items
-  // random item position
+function newItems() {
+  itemsArr.forEach((item) => {
+    item.itemMovement();
+    item.speed += 0.001;
+    // change position to go on top again = recycle instead off adding in the DOM
+    if (item.y > gameScreen.offsetHeight) {
+      item.y = -30 - Math.random() * 500;
+      item.x = Math.random() * (gameScreen.offsetWidth - item.width);
+      item.node.style.left = `${item.x}px`;
+      // the item can provoke the collision again bc new loop
+      item.caught = false;
+    }
+  });
+  collisionItems();
 }
-function itemDespawn() {
-  // lorsque les ingredients sont tombés, arrêter l'exécution
-  // enelever les éléments du DOM
-}
+setInterval(newItems, 20);
+// function scoreGame() {
+// counterItem.forEach((astralItem)=> {
+//   if (astralItem.caught ===  )
+// })
+// eachItems.caught = true;
+// }
 function collisionItems() {
-  // pour chaque collision avec le cauldron, ajouter une condition en fonction de l'ingrédient percuté et le nombre de point (incrémenter/décrémenter le compteur)
+  itemsArr.forEach((item) => {
+    if (!item.caught && checkItemCollision(item, cauldronObj)) {
+      item.caught = true;
+
+      if (item.category === 'astral') {
+        score += 1;
+      } else if (item.category === 'ordinary') {
+        score -= 1;
+      } else if (item.category === 'rotten') {
+        chances -= 1;
+      }
+
+      scoreDisplay.textContent = score;
+      chancesDisplay.textContent = chances;
+
+      if (chances <= 0) {
+        gameOver();
+      }
+      if (score > scoreMax) {
+        gameWin();
+      }
+    }
+  });
 }
-function checkItemCollision() {
-  // définir l'endroit de la collison
+
+// pour chaque collision avec le cauldron, ajouter une condition en fonction de l'ingrédient percuté et le nombre de point (incrémenter/décrémenter le compteur)
+
+function checkItemCollision(randomItem, cauldron) {
+  return (
+    randomItem.x < cauldron.x + cauldron.width &&
+    randomItem.x + randomItem.width > cauldron.x &&
+    randomItem.y < cauldron.y + cauldron.height &&
+    randomItem.y + randomItem.height > cauldron.y
+  );
 }
-function gameOver() {
-  //  clear interval
+function gameWin() {
+  console.log('You win');
+  clearInterval(itemsInterval);
+
+  gameScreen.style.display = 'none';
+  horoscopeScreen;
 }
+function gameOver() {}
 function replay() {
   //
 }
@@ -81,6 +133,7 @@ function titlesMovement() {}
 // // show the game after the rules and clicking btn
 // startBtn.addEventListener('click', () => {
 //   showScreen(gameScreen);
+startGame();
 // });
 // // select li when clicking + conenxion with horoscope result
 // zodiacList.forEach((sign) => {

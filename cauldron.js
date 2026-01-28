@@ -4,28 +4,32 @@ class Cauldron {
     this.node.src = './img/cauldron2.png';
 
     gameScreen.append(this.node);
-
-    this.x = 0;
-    this.y = 0;
     this.width = 100;
     this.height = 100;
+    this.x = 0;
+    this.y = gameScreen.offsetHeight - this.height;
 
     this.node.style.position = 'absolute';
-    this.node.style.bottom = `${this.y}px`;
+    this.node.style.top = `${this.y}px`;
     this.node.style.left = `${this.x}px`;
     this.node.style.width = `${this.width}px`;
     this.node.style.height = `${this.height}px`;
 
-    this.move = 1.2;
+    this.move = 8;
+    //  for the collision
+    this.caught = false;
   }
   rightMove() {
     this.x += 10;
-    this.node.style.left = `${this.x}px`;
+
     const limitScreen = gameScreen.offsetWidth - this.width;
-    if (this.x > limitScreen) this.x = limitScreen;
+    if (this.x > limitScreen) {
+      this.x = limitScreen;
+    }
+    this.node.style.left = `${this.x}px`;
   }
   leftMove() {
-    this.x -= 10;
+    this.x -= this.move;
     this.node.style.left = `${this.x}px`;
     if (this.x < 0) this.x = 0;
   }
