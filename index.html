@@ -39,7 +39,7 @@
       <p>Catch 15 Astral treasures to discover your fate</p>
       </div>
       <div id="infos">
-        <p>Duration : 60 secondes</p> 
+        <p>Duration : <span id="duration">60</span></p> 
         <div id="infos-p" class="info">
         <p>Chances :
           <div id="infos-img" class="info"></div>
@@ -51,19 +51,19 @@
       </div>
       <div class="ingredients">
         <div id="rotten">
-          <h3>Rotten cosmic -1 </h3>
+          <h3>Rotten cosmic </h3>
           <img src="./img/skull.png" alt="skull">
           <img src="./img/bomb.png" alt="bomb">
           <img src="./img/red-pepper.png" alt="red-pepper">
         </div>
         <div id="ordinary">
-          <h3>Ordinary Orb -1 </h3>
+          <h3>Ordinary Orb </h3>
           <img src="./img/sock.png" alt="sock">
           <img src="./img/cheese.png" alt="cheese">
           <img src="./img/tooth.png" alt="tooth">
         </div>
         <div id="astral">
-          <h3>Astral treasure +1</h3>
+          <h3>Astral Treasure </h3>
           <img src="./img/leaf.png" alt="leaf">
           <img src="./img/star.png" alt="moon">
           <img src="./img/crystal.png" alt="crystal">
@@ -76,9 +76,9 @@
     <div id="game-screen" class="game-box">
       <div id="game-infos">
         <div class="infos-left">
-          <p>Rotten Cosmic</p>
-          <p>Ordinary Orb</p>
-          <p>Astral Treasure</p>
+          <p>Rotten Cosmic : <span id="rotten-score">0</span></p>
+          <p>Ordinary Orb: <span id="ordinary-score">0</span></p>
+          <p>Astral Treasure : <span id="astral-score">0</span></p>
         </div>
         <div class="infos-left">
           <p>❤️ Chances : <span id="chances">3</span></p>
@@ -93,7 +93,6 @@
       <h2 class="wave"><span>G</span><span>A</span><span>M</span><span>E</span><span>&nbsp;</span><span>O</span><span>V</span><span>E</span><span>R</span></h2>
       <div id="score-result">
         <p>Score : <span id="score">0</span></p>
-        <p>Vies : <span id="chances">3</span></p>
       </div>
       <button id="restart-btn">Play again</button>
     </div>

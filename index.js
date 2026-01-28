@@ -6,8 +6,13 @@ const zodiacScreen = document.querySelector('#zodiac-option');
 const rulesScreen = document.querySelector('#game-rules');
 const gameScreen = document.querySelector('#game-screen');
 const gameOverScreen = document.querySelector('#game-over');
-const scoreDisplay = document.querySelector('#score');
+// const scoreDisplay = document.querySelector('#score');
+const duration = document.querySelector('#time');
+
 const chancesDisplay = document.querySelector('#chances');
+const rottenScore = document.querySelector('#rotten-score');
+const ordinaryScore = document.querySelector('#ordinary-score');
+const astralScore = document.querySelector('#astral-score');
 // to hide and show screens
 const screens = document.querySelectorAll('.game-box');
 // to select the zodiac sign
@@ -21,40 +26,63 @@ const restartBtn = document.querySelector('#restart-btn');
 
 //* GLOBAL NAME VARIABLES
 const itemsObj = new Items();
+const gameDuration = 120;
 let itemsArr = [];
 let cauldronObj = null;
-let itemsInterval = null;
-let itemsSpanInterval = null;
-let score = 0;
-let scoreMax = 15;
+// interval loop
+let intervalItems;
+// let score = 0;
+let rottenCosmic = 0;
+let ordinaryOrb = 0;
+let astralTreasure = 0;
 let chances = 3;
+let intervalTimer;
+// let remainingTime = 60;
 
 //* GLOBAL GAME FUNCTIONS
+function setTimer() {
+  intervalTimer = setInterval(() => {
+    remainingTime--;
+    duration.innerText = remainingTime;
 
+    if (remainingTime === 0) {
+      clearInterval(intervalTimer);
+      gameOver();
+    }
+  }, 1000);
+}
 //! SCREENS INTERVAL SHOW AND INTERACTION
-// function showScreen(selectedScreen) {
-//   screens.forEach((screen) => {
-//     screen.style.display = 'none';
-//   });
+function showScreen(selectedScreen) {
+  screens.forEach((screen) => {
+    screen.style.display = 'none';
+  });
 
-//   selectedScreen.style.display = 'flex';
-// }
-// //! show the first screen with the title and then the zodiac-option screen
-// showScreen(startScreen);
-// setTimeout(() => {
-//   showScreen(zodiacScreen);
-// }, 3000);
+  selectedScreen.style.display = 'flex';
+}
+//! show the first screen with the title and then the zodiac-option screen
+showScreen(startScreen);
+setTimeout(() => {
+  showScreen(zodiacScreen);
+}, 3000);
 
 function startGame() {
   cauldronObj = new Cauldron();
+
   for (let i = 0; i < 5; i++) {
     itemsArr.push(new Items());
   }
+  clearInterval(intervalItems);
+  intervalItems = setInterval(newItems, 20);
 }
+function replay() {
+  // delete index & dom
+  // startGame();
+}
+
 function newItems() {
   itemsArr.forEach((item) => {
     item.itemMovement();
-    item.speed += 0.001;
+    item.speed += 0.005;
     // change position to go on top again = recycle instead off adding in the DOM
     if (item.y > gameScreen.offsetHeight) {
       item.y = -30 - Math.random() * 500;
@@ -63,36 +91,39 @@ function newItems() {
       // the item can provoke the collision again bc new loop
       item.caught = false;
     }
+    collisionItems();
   });
-  collisionItems();
 }
-setInterval(newItems, 20);
-// function scoreGame() {
-// counterItem.forEach((astralItem)=> {
-//   if (astralItem.caught ===  )
-// })
-// eachItems.caught = true;
-// }
+
 function collisionItems() {
   itemsArr.forEach((item) => {
     if (!item.caught && checkItemCollision(item, cauldronObj)) {
       item.caught = true;
 
-      if (item.category === 'astral') {
-        score += 1;
-      } else if (item.category === 'ordinary') {
-        score -= 1;
-      } else if (item.category === 'rotten') {
-        chances -= 1;
+      switch (item.category) {
+        case 'astral':
+          astralTreasure += 1;
+          break;
+        case 'ordinary':
+          ordinaryOrb += 1;
+          break;
+        case 'rotten':
+          rottenCosmic += 1;
+          chances -= 1; // on peut aussi utiliser rottenCosmic directement
+          break;
       }
+      console.log(rottenScore);
 
-      scoreDisplay.textContent = score;
+      rottenScore.innerText = rottenCosmic;
+      ordinaryScore.textContent = ordinaryOrb;
+      astralScore.textContent = astralTreasure;
       chancesDisplay.textContent = chances;
 
       if (chances <= 0) {
         gameOver();
       }
-      if (score > scoreMax) {
+
+      if (astralTreasure >= 15) {
         gameWin();
       }
     }
@@ -111,42 +142,46 @@ function checkItemCollision(randomItem, cauldron) {
 }
 function gameWin() {
   console.log('You win');
-  clearInterval(itemsInterval);
+  clearInterval(intervalItems);
 
   gameScreen.style.display = 'none';
-  horoscopeScreen;
 }
-function gameOver() {}
-function replay() {
-  //
+function gameOver() {
+  clearInterval(intervalItems);
+  gameOverScreen.style.display = 'flex';
+  gameScreen.style.display = 'none';
 }
-function titlesMovement() {}
+
 //! EVENT LISTENER
 // show the rules screen after clicking next-btn
-// zodiacBtn.addEventListener('click', () => {
-//   if (zodiacSelection) {
-//     showScreen(rulesScreen);
-//   } else {
-//     alert('Please select your zodiac sign');
-//   }
-// });
-// // show the game after the rules and clicking btn
-// startBtn.addEventListener('click', () => {
-//   showScreen(gameScreen);
-startGame();
-// });
+zodiacBtn.addEventListener('click', () => {
+  if (zodiacSelection) {
+    showScreen(rulesScreen);
+  } else {
+    alert('Please select your zodiac sign');
+  }
+});
+// show the game after the rules and clicking btn
+startBtn.addEventListener('click', () => {
+  showScreen(gameScreen);
+  startGame();
+});
+restartBtn.addEventListener('click', () => {
+  showScreen(gameScreen);
+  replay();
+});
 // // select li when clicking + conenxion with horoscope result
-// zodiacList.forEach((sign) => {
-//   sign.addEventListener('click', () => {
-//     zodiacList.forEach((li) => {
-//       li.classList.remove('selected');
-//     });
-//     sign.classList.add('selected');
-//     // trim() necessary to remove spaces (better to compare and stock values)
-//     zodiacSelection = sign.textContent.trim();
-//     console.log('selection', zodiacSelection);
-//   });
-// });
+zodiacList.forEach((sign) => {
+  sign.addEventListener('click', () => {
+    zodiacList.forEach((li) => {
+      li.classList.remove('selected');
+    });
+    sign.classList.add('selected');
+    //     // trim() necessary to remove spaces (better to compare and stock values)
+    zodiacSelection = sign.textContent.trim();
+    console.log('selection', zodiacSelection);
+  });
+});
 document.addEventListener('keydown', (event) => {
   if (event.key === 'ArrowLeft') {
     cauldronObj.leftMove();
