@@ -21,10 +21,10 @@ class Items {
     gameScreen.append(this.node);
 
     // position et taille
-    this.width = 30;
-    this.height = 30;
+    this.width = 40;
+    this.height = 40;
     this.x = Math.random() * (gameScreen.offsetWidth - this.width);
-    this.y = -30 - Math.random() * 200;
+    this.y = -40 - Math.random() * 200;
     this.speed = Math.random() * 2 + 1;
 
     // collision

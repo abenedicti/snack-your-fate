@@ -1,5 +1,4 @@
 /// GLOBAL DOM ELEMENTS
-
 //* screens
 const startScreen = document.querySelector('#start-screen');
 const zodiacScreen = document.querySelector('#zodiac-option');
@@ -7,16 +6,16 @@ const rulesScreen = document.querySelector('#game-rules');
 const gameScreen = document.querySelector('#game-screen');
 const gameOverScreen = document.querySelector('#game-over');
 const gameOverMessage = document.createElement('p');
-const scoreDisplay = document.querySelector('#score');
 const duration = document.querySelector('#time');
-
+//* score display
+const scoreDisplay = document.querySelector('#score');
 const chancesDisplay = document.querySelector('#chances');
 const rottenScore = document.querySelector('#rotten-score');
 const ordinaryScore = document.querySelector('#ordinary-score');
 const astralScore = document.querySelector('#astral-score');
-// to hide and show screens
+//* to hide and show screens
 const screens = document.querySelectorAll('.game-box');
-// to select the zodiac sign
+//* to select the zodiac sign
 const zodiacList = document.querySelectorAll('#zodiac-sign li');
 const horoscopeResult = document.querySelector('#horoscope-result');
 let zodiacSelection = null;
@@ -25,21 +24,20 @@ let zodiacSelection = null;
 const zodiacBtn = document.querySelector('#next-btn');
 const startBtn = document.querySelector('#start-btn');
 const restartBtn = document.querySelector('#restart-btn');
+//* animation title
+const titleAnimation = document.querySelector('.wave');
 
 //* GLOBAL NAME VARIABLES
 const itemsObj = new Items();
 let gameDuration = 60;
 let itemsArr = [];
 let cauldronObj = null;
-// interval loop
 let intervalItems;
-// let score = 0;
 let rottenCosmic = 0;
 let ordinaryOrb = 0;
 let astralTreasure = 0;
 let chances = 3;
 let intervalTimer;
-// let remainingTime = 60;
 
 //* GLOBAL GAME FUNCTIONS
 function setTimer() {
@@ -52,8 +50,8 @@ function setTimer() {
       gameOver();
     }
   }, 1000);
+  //! SCREENS INTERVAL SHOW AND INTERACTION
 }
-//! SCREENS INTERVAL SHOW AND INTERACTION
 function showScreen(selectedScreen) {
   screens.forEach((screen) => {
     screen.style.display = 'none';
@@ -68,6 +66,10 @@ setTimeout(() => {
 }, 3000);
 
 function startGame() {
+  // remove the cauldron from th DOM if one already exist
+  if (cauldronObj && cauldronObj.node) {
+    cauldronObj.node.remove();
+  }
   cauldronObj = new Cauldron();
 
   for (let i = 0; i < 9; i++) {
@@ -80,8 +82,23 @@ function startGame() {
   intervalItems = setInterval(newItems, 20);
 }
 function replay() {
+  itemsArr.forEach((item) => item.node.remove());
+  itemsArr = [];
+  astralTreasure = 0;
+  ordinaryOrb = 0;
+  rottenCosmic = 0;
+  chances = 3;
+
+  astralScore.textContent = astralTreasure;
+  ordinaryScore.textContent = ordinaryOrb;
+  rottenScore.textContent = rottenCosmic;
+  chancesDisplay.textContent = chances;
+
+  gameOverScreen.style.display = 'none';
+  gameScreen.style.display = 'flex';
+
   // delete index & dom
-  // startGame();
+  startGame();
 }
 
 function newItems() {
@@ -90,7 +107,7 @@ function newItems() {
     item.speed += 0.002;
     // change position to go on top again = recycle instead off adding in the DOM
     if (item.y > gameScreen.offsetHeight) {
-      item.y = -30 - Math.random() * 300;
+      item.y = -40 - Math.random() * 300;
       item.x = Math.random() * (gameScreen.offsetWidth - item.width);
       item.node.style.left = `${item.x}px`;
       // the item can provoke the collision again bc new loop
@@ -201,7 +218,7 @@ function showHoroscope(sign, hasWon) {
     },
     Aquarius: {
       win: 'Brilliant idea, perfect execution! You’re a star with the martini.',
-      lose: 'Oops… genius moment postponed, for you, a life style',
+      lose: 'Oops… genius moment postponed, usual day for you',
     },
     Pisces: {
       win: 'Dreams do come true! Pisces magic works again. EAT SHRIMPES',
@@ -211,9 +228,19 @@ function showHoroscope(sign, hasWon) {
   const messages = horoscopes[sign];
   return hasWon ? messages.win : messages.lose;
 }
-function showResult() {}
+function waveTitle(title) {
+  const text = title.textContent;
+  title.textContent = '';
 
-//! EVENT LISTENER
+  [...text].forEach((letter, index) => {
+    const span = document.createElement('span');
+    span.textContent = letter;
+    span.style.animationDelay = `${index * 0.1}s`;
+    title.append(span);
+  });
+}
+waveTitle(titleAnimation);
+//* EVENT LISTENER
 // show the rules screen after clicking next-btn
 zodiacBtn.addEventListener('click', () => {
   if (zodiacSelection) {
@@ -231,7 +258,7 @@ restartBtn.addEventListener('click', () => {
   showScreen(gameScreen);
   replay();
 });
-// // select li when clicking + conenxion with horoscope result
+/// select li when clicking + connexion with horoscope result
 zodiacList.forEach((sign) => {
   sign.addEventListener('click', () => {
     zodiacList.forEach((li) => {
@@ -243,6 +270,7 @@ zodiacList.forEach((sign) => {
     console.log('selection', zodiacSelection);
   });
 });
+/// keypress
 document.addEventListener('keydown', (event) => {
   if (event.key === 'ArrowLeft') {
     cauldronObj.leftMove();
@@ -255,16 +283,15 @@ document.addEventListener('keydown', (event) => {
   // }
 });
 
-/// PLANNING SESSION
-
+//! PLANNING SESSION
 /*
-/// ZODIAC 
+//! ZODIAC 
 - li have to be connected with the horoscope ✅
-/// Cauldron object
+//! Cauldron object
 - properties (x, y, w, h, speed) ✅
 - keypress ✅
 
-/// ItemSpawn (set timer)
+//! ItemSpawn (set timer)
 - items always move down (from top to bottom) =  decrease y 
 - speed increase every 10sec
 - collision when item touch the cauldron (top and sides)
@@ -275,14 +302,14 @@ document.addEventListener('keydown', (event) => {
 - collision last lose item => game over
 
 
-/// Items objects
+//! Items objects
 - properties(x, y, x, h, speed) ✅
 - come by 4 (differents items)
 - randomize the number of items per fall ✅
 - randomize the type of items ✅
 
 
-/// EXTRA FUNCTIONALITIES
+//! EXTRA FUNCTIONALITIES
 Mandatory
 - background sound 
 - restart btn

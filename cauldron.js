@@ -4,8 +4,8 @@ class Cauldron {
     this.node.src = './img/cauldron2.png';
 
     gameScreen.append(this.node);
-    this.width = 100;
-    this.height = 100;
+    this.width = 120;
+    this.height = 120;
     this.x = 0;
     this.y = gameScreen.offsetHeight - this.height;
 
