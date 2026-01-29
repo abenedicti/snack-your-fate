@@ -15,20 +15,22 @@
       </div>
     <div id="zodiac-option" class="game-box">
         <h1>Feeling cosmic today ?</h1>
-      <ul id="zodiac-sign">
-        <li> &#9800  Aries</li>
-        <li> &#9801 Taurus</li>
-        <li> &#9802 Gemini</li>
-        <li> &#9803 Cancer</li>
-        <li> &#9804 Leo</li>
-        <li> &#9805 Virgo</li>
-        <li> &#9806 Libra</li>
-        <li> &#9807 Scorpio</li>
-        <li> &#9808 Sagittarius</li>
-        <li> &#9809 Capricorn</li>
-        <li> &#9810 Aquarus</li>
-        <li> &#9811 Piscies</li>
-      </ul>
+  <ul id="zodiac-sign">
+    <!-- use of data-sign here to separate unicode to text for later comaprison -->
+  <li data-sign="Aries">&#9800 Aries</li>
+  <li data-sign="Taurus">&#9801 Taurus</li>
+  <li data-sign="Gemini">&#9802 Gemini</li>
+  <li data-sign="Cancer">&#9803 Cancer</li>
+  <li data-sign="Leo">&#9804 Leo</li>
+  <li data-sign="Virgo">&#9805 Virgo</li>
+  <li data-sign="Libra">&#9806 Libra</li>
+  <li data-sign="Scorpio">&#9807 Scorpio</li>
+  <li data-sign="Sagittarius">&#9808 Sagittarius</li>
+  <li data-sign="Capricorn">&#9809 Capricorn</li>
+  <li data-sign="Aquarius">&#9810 Aquarius</li>
+  <li data-sign="Pisces">&#9811 Pisces</li>
+</ul>
+
       <button id="next-btn">Next</button>
     </div>
     
@@ -91,6 +93,7 @@
     <!-- GAME SCREEN BOX -->
     <div id="game-over" class="game-box">
       <h2 class="wave"><span>G</span><span>A</span><span>M</span><span>E</span><span>&nbsp;</span><span>O</span><span>V</span><span>E</span><span>R</span></h2>
+      <p id="horoscope-result"></p>
       <button id="restart-btn">Play again</button>
     </div>
   </div>

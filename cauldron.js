@@ -1,7 +1,7 @@
 class Cauldron {
   constructor() {
     this.node = document.createElement('img');
-    this.node.src = './img/cauldron.png';
+    this.node.src = './img/cauldron2.png';
 
     gameScreen.append(this.node);
     this.width = 100;

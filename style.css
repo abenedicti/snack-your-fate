@@ -238,3 +238,7 @@ p {
   letter-spacing: 5px;
   margin: 20px;
 }
+#horoscope-result p {
+  font-size: 0.5rem;
+  letter-spacing: 2px;
+}

@@ -9,20 +9,14 @@ class Items {
       './img/red-pepper.png',
     ];
 
-    const categories = [
+    this.categories = [
       { list: astral, category: 'astral' },
       { list: ordinary, category: 'ordinary' },
       { list: rotten, category: 'rotten' },
     ];
 
-    const choice = categories[Math.floor(Math.random() * categories.length)];
-
-    const img = choice.list[Math.floor(Math.random() * choice.list.length)];
-
     // créer l’image
     this.node = document.createElement('img');
-    this.node.src = img;
-    this.category = choice.category;
 
     gameScreen.append(this.node);
 
@@ -35,7 +29,7 @@ class Items {
 
     // collision
     this.caught = false;
-
+    this.randomizeItems();
     // style
     this.node.style.position = 'absolute';
     this.node.style.width = `${this.width}px`;
@@ -44,6 +38,13 @@ class Items {
     this.node.style.top = `${this.y}px`;
   }
 
+  randomizeItems() {
+    const choice =
+      this.categories[Math.floor(Math.random() * this.categories.length)];
+    const img = choice.list[Math.floor(Math.random() * choice.list.length)];
+    this.node.src = img;
+    this.category = choice.category;
+  }
   itemMovement() {
     this.y += this.speed;
     this.node.style.top = `${this.y}px`;

@@ -6,6 +6,7 @@ const zodiacScreen = document.querySelector('#zodiac-option');
 const rulesScreen = document.querySelector('#game-rules');
 const gameScreen = document.querySelector('#game-screen');
 const gameOverScreen = document.querySelector('#game-over');
+const gameOverMessage = document.createElement('p');
 const scoreDisplay = document.querySelector('#score');
 const duration = document.querySelector('#time');
 
@@ -17,6 +18,7 @@ const astralScore = document.querySelector('#astral-score');
 const screens = document.querySelectorAll('.game-box');
 // to select the zodiac sign
 const zodiacList = document.querySelectorAll('#zodiac-sign li');
+const horoscopeResult = document.querySelector('#horoscope-result');
 let zodiacSelection = null;
 
 //* buttons
@@ -85,7 +87,7 @@ function replay() {
 function newItems() {
   itemsArr.forEach((item) => {
     item.itemMovement();
-    item.speed += 0.003;
+    item.speed += 0.002;
     // change position to go on top again = recycle instead off adding in the DOM
     if (item.y > gameScreen.offsetHeight) {
       item.y = -30 - Math.random() * 300;
@@ -93,9 +95,10 @@ function newItems() {
       item.node.style.left = `${item.x}px`;
       // the item can provoke the collision again bc new loop
       item.caught = false;
+      item.randomizeItems();
     }
-    collisionItems();
   });
+  collisionItems();
 }
 
 function collisionItems() {
@@ -109,6 +112,7 @@ function collisionItems() {
           break;
         case 'ordinary':
           ordinaryOrb += 1;
+          astralTreasure -= 1;
           break;
         case 'rotten':
           rottenCosmic += 1;
@@ -123,17 +127,17 @@ function collisionItems() {
       chancesDisplay.textContent = chances;
 
       if (chances <= 0) {
-        gameOver();
+        console.log('Game over, zodiac:', zodiacSelection);
+        gameOver(false);
       }
 
       if (astralTreasure >= 15) {
-        gameWin();
+        console.log('Game over, zodiac:', zodiacSelection);
+        gameOver(true);
       }
     }
   });
 }
-
-// pour chaque collision avec le cauldron, ajouter une condition en fonction de l'ingrédient percuté et le nombre de point (incrémenter/décrémenter le compteur)
 
 function checkItemCollision(randomItem, cauldron) {
   return (
@@ -143,17 +147,69 @@ function checkItemCollision(randomItem, cauldron) {
     randomItem.y + randomItem.height > cauldron.y
   );
 }
-function gameWin() {
-  console.log('You win');
-  clearInterval(intervalItems);
 
-  gameScreen.style.display = 'none';
-}
-function gameOver() {
+function gameOver(hasWon) {
   clearInterval(intervalItems);
   gameOverScreen.style.display = 'flex';
   gameScreen.style.display = 'none';
-  scoreDisplay.innerText = score;
+  // scoreDisplay.innerText = score;
+  const result = showHoroscope(zodiacSelection, hasWon);
+  horoscopeResult.textContent = result;
+}
+
+function showHoroscope(sign, hasWon) {
+  const horoscopes = {
+    Aries: {
+      win: 'Your energy paid off! Only Mars is impressed.',
+      lose: 'Oops… maybe next time, don’t rush like a ram. Go to bed',
+    },
+    Taurus: {
+      win: 'You got it! Your stubbornness finally worked in your favor. Enjoy.',
+      lose: 'Relax… the couch forgives your mistakes. Eat soil and clean your feet',
+    },
+    Gemini: {
+      win: 'Double the fun! Gemini, you nailed it… You are the best, I love you.',
+      lose: 'Change of plans? Yep, that’s you. Try again next year',
+    },
+    Cancer: {
+      win: 'Heart and soul—perfect catch! Your moon is proud for once.',
+      lose: "It’s okay… cry, snack but don't try again, you are hopeless.",
+    },
+    Leo: {
+      win: 'You shine bright! Even the stars are trying to applauding you.',
+      lose: 'Roar! Not your day, breath and spit your gum',
+    },
+    Virgo: {
+      win: 'Precision pays off! Virgo efficiency level: expert. A least one area',
+      lose: 'Plan B… or C… maybe D? Stop trying, you are a piece of s***',
+    },
+    Libra: {
+      win: 'Balance achieved! Harmony and victory are yours. Cuba Libra. ',
+      lose: 'Can’t please everyone… but you can go f*** yourself',
+    },
+    Scorpio: {
+      win: 'Intuition strikes! Your secret Scorpio power works only on you.',
+      lose: 'Hmm… sabotage by destiny? Try again, cuttie',
+    },
+    Sagittarius: {
+      win: 'Adventure success! You caught it on the first try. Enjoy this unique victory',
+      lose: 'Wrong turn? Don’t worry, life goes on, swallow it',
+    },
+    Capricorn: {
+      win: 'Goal achieved! Your hard work paid off... or not.',
+      lose: "Effort counts… just not this time. Keep climbing and don't hurt yourlsef",
+    },
+    Aquarius: {
+      win: 'Brilliant idea, perfect execution! You’re a star with the martini.',
+      lose: 'Oops… genius moment postponed, for you, a life style',
+    },
+    Pisces: {
+      win: 'Dreams do come true! Pisces magic works again. EAT SHRIMPES',
+      lose: 'Reality bites… but don’t forget to get use to it.',
+    },
+  };
+  const messages = horoscopes[sign];
+  return hasWon ? messages.win : messages.lose;
 }
 function showResult() {}
 
@@ -183,7 +239,7 @@ zodiacList.forEach((sign) => {
     });
     sign.classList.add('selected');
     //     // trim() necessary to remove spaces (better to compare and stock values)
-    zodiacSelection = sign.textContent.trim();
+    zodiacSelection = sign.dataset.sign;
     console.log('selection', zodiacSelection);
   });
 });
@@ -212,11 +268,11 @@ document.addEventListener('keydown', (event) => {
 - items always move down (from top to bottom) =  decrease y 
 - speed increase every 10sec
 - collision when item touch the cauldron (top and sides)
-- collision good item +1
+- collision win item +1
 - collision neutral item -1
-- collision bad item -1 chance
+- collision lose item -1 chance
 - collision number item detection for score
-- collision last bad item => game over
+- collision last lose item => game over
 
 
 /// Items objects
