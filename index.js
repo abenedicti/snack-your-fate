@@ -26,7 +26,17 @@ const startBtn = document.querySelector('#start-btn');
 const restartBtn = document.querySelector('#restart-btn');
 //* animation title
 const titleAnimation = document.querySelector('.wave');
-
+//* sound
+const bgSound = new Audio('./sounds/bg-sound.mp3');
+bgSound.volume = 0.1;
+const gameOverSound = new Audio('./sounds/game-over-sound.mp3');
+gameOverSound.volume = 0.1;
+const collectRightItem = new Audio('./sounds/good-item-collect.mp3');
+collectRightItem.volume = 0.1;
+const collectWrongItem = new Audio('./sounds/wrong-item-collect.mp3');
+collectWrongItem.volume = 0.3;
+const collectOrdinaryItem = new Audio('./sounds/ordinary-item-collect.mp3');
+collectOrdinaryItem.volume = 0.1;
 //* GLOBAL NAME VARIABLES
 const itemsObj = new Items();
 let gameDuration = 60;
@@ -75,6 +85,9 @@ function startGame() {
   for (let i = 0; i < 9; i++) {
     itemsArr.push(new Items());
   }
+  bgSound.currentTime = 0;
+  bgSound.play();
+
   clearInterval(intervalItems);
   clearInterval(intervalTimer);
   gameDuration = 60;
@@ -126,17 +139,35 @@ function collisionItems() {
       switch (item.category) {
         case 'astral':
           astralTreasure += 1;
+          collectRightItem.currentTime = 0;
+          collectRightItem.play();
           break;
         case 'ordinary':
           ordinaryOrb += 1;
           astralTreasure -= 1;
+          collectOrdinaryItem.currentTime = 0;
+          collectOrdinaryItem.play();
           break;
         case 'rotten':
           rottenCosmic += 1;
           chances -= 1;
+          collectWrongItem.currentTime = 0;
+          collectWrongItem.play();
           break;
       }
-      console.log(rottenScore);
+      // hide the item when collide and randomize again
+      item.node.style.display = 'none';
+      item.y = -30 - Math.random() * 200;
+      item.x = Math.random() * (gameScreen.offsetWidth - item.width);
+
+      // setTimeOut for the next round
+      setTimeout(() => {
+        item.node.style.left = `${item.x}px`;
+        item.node.style.top = `${item.y}px`;
+        item.node.style.display = 'block';
+        item.caught = false; //
+        item.randomizeItems(); //
+      }, 50);
 
       rottenScore.innerText = rottenCosmic;
       ordinaryScore.textContent = ordinaryOrb;
@@ -169,7 +200,12 @@ function gameOver(hasWon) {
   clearInterval(intervalItems);
   gameOverScreen.style.display = 'flex';
   gameScreen.style.display = 'none';
-  // scoreDisplay.innerText = score;
+
+  gameOverSound.play();
+
+  bgSound.pause();
+  bgSound.currentTime = 0;
+
   const result = showHoroscope(zodiacSelection, hasWon);
   horoscopeResult.textContent = result;
 }
