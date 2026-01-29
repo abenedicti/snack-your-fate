@@ -27,6 +27,12 @@ const restartBtn = document.querySelector('#restart-btn');
 //* animation title
 const titleAnimation = document.querySelector('.wave');
 //* sound
+const soundBtn = document.querySelector('#sound-toggle');
+let soundEnabled = true;
+// soundBtn.querySelector('i').className = soundEnabled
+//   ? 'fas fa-volume-up'
+//   : 'fas fa-volume-mute';
+
 const bgSound = new Audio('./sounds/bg-sound.mp3');
 bgSound.volume = 0.1;
 const gameOverSound = new Audio('./sounds/game-over-sound.mp3');
@@ -73,7 +79,7 @@ function showScreen(selectedScreen) {
 showScreen(startScreen);
 setTimeout(() => {
   showScreen(zodiacScreen);
-}, 3000);
+}, 5000);
 
 function startGame() {
   // remove the cauldron from th DOM if one already exist
@@ -225,11 +231,11 @@ function showHoroscope(sign, hasWon) {
       lose: 'Change of plans? Yep, that’s you. Try again next year',
     },
     Cancer: {
-      win: 'Heart and soul—perfect catch! Your moon is proud for once.',
+      win: 'Heart and soul—perfect catch! Your moon is proud of you for once.',
       lose: "It’s okay… cry, snack but don't try again, you are hopeless.",
     },
     Leo: {
-      win: 'You shine bright! Even the stars are trying to applauding you.',
+      win: 'You shine bright! Even the stars are trying to applaud you.',
       lose: 'Roar! Not your day, breath and spit your gum',
     },
     Virgo: {
@@ -258,7 +264,7 @@ function showHoroscope(sign, hasWon) {
     },
     Pisces: {
       win: 'Dreams do come true! Pisces magic works again. EAT SHRIMPES',
-      lose: 'Reality bites… but don’t forget to get use to it.',
+      lose: 'Reality bites… you should get used to it.',
     },
   };
   const messages = horoscopes[sign];
@@ -276,6 +282,7 @@ function waveTitle(title) {
   });
 }
 waveTitle(titleAnimation);
+
 //* EVENT LISTENER
 // show the rules screen after clicking next-btn
 zodiacBtn.addEventListener('click', () => {
@@ -306,6 +313,17 @@ zodiacList.forEach((sign) => {
     console.log('selection', zodiacSelection);
   });
 });
+soundBtn.addEventListener('click', () => {
+  soundEnabled = !soundEnabled;
+
+  if (soundEnabled) {
+    bgSound.play(); // relance la musique si activée
+    soundBtn.textContent = '🔊';
+  } else {
+    bgSound.pause(); // pause la musique
+    soundBtn.textContent = '🔇';
+  }
+});
 /// keypress
 document.addEventListener('keydown', (event) => {
   if (event.key === 'ArrowLeft') {
@@ -328,33 +346,31 @@ document.addEventListener('keydown', (event) => {
 - keypress ✅
 
 //! ItemSpawn (set timer)
-- items always move down (from top to bottom) =  decrease y 
-- speed increase every 10sec
-- collision when item touch the cauldron (top and sides)
-- collision win item +1
-- collision neutral item -1
-- collision lose item -1 chance
-- collision number item detection for score
-- collision last lose item => game over
+- items always move down (from top to bottom) =  decrease y ✅
+- speed increase every 10sec✅
+- collision when item touch the cauldron (top and sides)✅
+- collision win item +1✅
+- collision neutral item -1✅
+- collision lose item -1 chance✅
+- collision number item detection for score✅
+- collision last lose item => game over✅
 
 
 //! Items objects
 - properties(x, y, x, h, speed) ✅
-- come by 4 (differents items)
 - randomize the number of items per fall ✅
 - randomize the type of items ✅
 
 
 //! EXTRA FUNCTIONALITIES
 Mandatory
-- background sound 
-- restart btn
-- show score
-- final release : horoscope
-- Letters (title and game over) and items moving 
+- background sound ✅
+- restart btn✅
+- final release : horoscope✅
+- Letters (title and game over) and items moving ✅
 
 Bonus
-- collision sound
-- teasing when losing
+- collision sound✅
+
 
 */

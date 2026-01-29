@@ -1,6 +1,5 @@
 class Items {
   constructor() {
-    // catégories d’ingrédients
     const astral = ['./img/leaf.png', './img/crystal.png', './img/star.png'];
     const ordinary = ['./img/cheese.png', './img/sock.png', './img/tooth.png'];
     const rotten = [
@@ -15,12 +14,10 @@ class Items {
       { list: rotten, category: 'rotten' },
     ];
 
-    // créer l’image
     this.node = document.createElement('img');
 
     gameScreen.append(this.node);
 
-    // position et taille
     this.width = 40;
     this.height = 40;
     this.x = Math.random() * (gameScreen.offsetWidth - this.width);
@@ -30,7 +27,7 @@ class Items {
     // collision
     this.caught = false;
     this.randomizeItems();
-    // style
+
     this.node.style.position = 'absolute';
     this.node.style.width = `${this.width}px`;
     this.node.style.height = `${this.height}px`;

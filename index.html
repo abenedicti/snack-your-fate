@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style/style.css">
     <title>SNACK YOUR FATE</title>
   </head>
   <body>
@@ -38,7 +38,7 @@
     <div id="game-rules" class="game-box">
       <div id="rules">
       <h2>GOAL</h2>
-      <p>Catch 15 Astral treasures to get favorable fate</p>
+      <p>Catch 15 Astral treasures to get a favorable fate</p>
       </div>
       <div id="infos">
         <p>Duration : <span id="duration">60'</span></p> 
@@ -52,19 +52,19 @@
       </div>
       <div class="ingredients">
         <div id="rotten">
-          <h3>Rotten cosmic </h3>
+          <h3>Rotten cosmic -1 life</h3>
           <img src="./img/skull.png" alt="skull">
           <img src="./img/bomb.png" alt="bomb">
           <img src="./img/red-pepper.png" alt="red-pepper">
         </div>
         <div id="ordinary">
-          <h3>Ordinary Orb </h3>
+          <h3>Ordinary Orb -1</h3>
           <img src="./img/sock.png" alt="sock">
           <img src="./img/cheese.png" alt="cheese">
           <img src="./img/tooth.png" alt="tooth">
         </div>
         <div id="astral">
-          <h3>Astral Treasure </h3>
+          <h3>Astral Treasure +1 </h3>
           <img src="./img/leaf.png" alt="leaf">
           <img src="./img/star.png" alt="moon">
           <img src="./img/crystal.png" alt="crystal">
@@ -75,6 +75,7 @@
     </div>
     <!-- GAME SCREEN -->
     <div id="game-screen" class="game-box">
+      <button id="sound-toggle">🔊</button>
       <div id="game-infos">
         <div class="infos-left">
           <p>Rotten Cosmic : <span id="rotten-score">0</span></p>
@@ -86,7 +87,6 @@
           <p> ⏱ Remaining : <span id="time">60</span></p>
         </div>
       </div>
-        
     </div>
     <!-- GAME SCREEN BOX -->
     <div id="game-over" class="game-box">
@@ -97,8 +97,8 @@
   </div>
 </div>
 </div>
-<script src="./cauldron.js"></script>
-<script src="./items.js"></script>
-<script src="./index.js"></script>
+<script src="./js/cauldron.js"></script>
+<script src="./js/items.js"></script>
+<script src="./js/index.js"></script>
   </body>
 </html>
