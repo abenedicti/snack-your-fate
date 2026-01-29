@@ -6,7 +6,7 @@ const zodiacScreen = document.querySelector('#zodiac-option');
 const rulesScreen = document.querySelector('#game-rules');
 const gameScreen = document.querySelector('#game-screen');
 const gameOverScreen = document.querySelector('#game-over');
-// const scoreDisplay = document.querySelector('#score');
+const scoreDisplay = document.querySelector('#score');
 const duration = document.querySelector('#time');
 
 const chancesDisplay = document.querySelector('#chances');
@@ -26,7 +26,7 @@ const restartBtn = document.querySelector('#restart-btn');
 
 //* GLOBAL NAME VARIABLES
 const itemsObj = new Items();
-const gameDuration = 120;
+let gameDuration = 60;
 let itemsArr = [];
 let cauldronObj = null;
 // interval loop
@@ -42,10 +42,10 @@ let intervalTimer;
 //* GLOBAL GAME FUNCTIONS
 function setTimer() {
   intervalTimer = setInterval(() => {
-    remainingTime--;
-    duration.innerText = remainingTime;
+    gameDuration--;
+    duration.innerText = gameDuration;
 
-    if (remainingTime === 0) {
+    if (gameDuration <= 0) {
       clearInterval(intervalTimer);
       gameOver();
     }
@@ -68,10 +68,13 @@ setTimeout(() => {
 function startGame() {
   cauldronObj = new Cauldron();
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 9; i++) {
     itemsArr.push(new Items());
   }
   clearInterval(intervalItems);
+  clearInterval(intervalTimer);
+  gameDuration = 60;
+  setTimer();
   intervalItems = setInterval(newItems, 20);
 }
 function replay() {
@@ -82,10 +85,10 @@ function replay() {
 function newItems() {
   itemsArr.forEach((item) => {
     item.itemMovement();
-    item.speed += 0.005;
+    item.speed += 0.003;
     // change position to go on top again = recycle instead off adding in the DOM
     if (item.y > gameScreen.offsetHeight) {
-      item.y = -30 - Math.random() * 500;
+      item.y = -30 - Math.random() * 300;
       item.x = Math.random() * (gameScreen.offsetWidth - item.width);
       item.node.style.left = `${item.x}px`;
       // the item can provoke the collision again bc new loop
@@ -109,7 +112,7 @@ function collisionItems() {
           break;
         case 'rotten':
           rottenCosmic += 1;
-          chances -= 1; // on peut aussi utiliser rottenCosmic directement
+          chances -= 1;
           break;
       }
       console.log(rottenScore);
@@ -150,7 +153,9 @@ function gameOver() {
   clearInterval(intervalItems);
   gameOverScreen.style.display = 'flex';
   gameScreen.style.display = 'none';
+  scoreDisplay.innerText = score;
 }
+function showResult() {}
 
 //! EVENT LISTENER
 // show the rules screen after clicking next-btn

@@ -30,7 +30,7 @@ class Items {
     this.width = 30;
     this.height = 30;
     this.x = Math.random() * (gameScreen.offsetWidth - this.width);
-    this.y = -30 - Math.random() * 500;
+    this.y = -30 - Math.random() * 200;
     this.speed = Math.random() * 2 + 1;
 
     // collision
