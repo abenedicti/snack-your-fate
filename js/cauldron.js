@@ -2,6 +2,8 @@ class Cauldron {
   constructor() {
     this.node = document.createElement('img');
     this.node.src = './img/cauldron2.png';
+    this.node.classList.add('responsive-cauldron');
+    gameScreen.appendChild(this.node);
 
     gameScreen.append(this.node);
     this.width = 120;

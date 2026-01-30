@@ -29,9 +29,6 @@ const titleAnimation = document.querySelector('.wave');
 //* sound
 const soundBtn = document.querySelector('#sound-toggle');
 let soundEnabled = true;
-// soundBtn.querySelector('i').className = soundEnabled
-//   ? 'fas fa-volume-up'
-//   : 'fas fa-volume-mute';
 
 const bgSound = new Audio('./sounds/bg-sound.mp3');
 bgSound.volume = 0.1;
@@ -82,10 +79,6 @@ setTimeout(() => {
 }, 5000);
 
 function startGame() {
-  // remove the cauldron from th DOM if one already exist
-  if (cauldronObj && cauldronObj.node) {
-    cauldronObj.node.remove();
-  }
   cauldronObj = new Cauldron();
 
   for (let i = 0; i < 9; i++) {
@@ -94,8 +87,6 @@ function startGame() {
   bgSound.currentTime = 0;
   bgSound.play();
 
-  clearInterval(intervalItems);
-  clearInterval(intervalTimer);
   gameDuration = 60;
   setTimer();
   intervalItems = setInterval(newItems, 20);
@@ -116,7 +107,6 @@ function replay() {
   gameOverScreen.style.display = 'none';
   gameScreen.style.display = 'flex';
 
-  // delete index & dom
   startGame();
 }
 
@@ -146,19 +136,19 @@ function collisionItems() {
         case 'astral':
           astralTreasure += 1;
           collectRightItem.currentTime = 0;
-          collectRightItem.play();
+          playSound(collectRightItem);
           break;
         case 'ordinary':
           ordinaryOrb += 1;
           astralTreasure -= 1;
           collectOrdinaryItem.currentTime = 0;
-          collectOrdinaryItem.play();
+          playSound(collectOrdinaryItem);
           break;
         case 'rotten':
           rottenCosmic += 1;
           chances -= 1;
           collectWrongItem.currentTime = 0;
-          collectWrongItem.play();
+          playSound(collectWrongItem);
           break;
       }
       // hide the item when collide and randomize again
@@ -203,70 +193,28 @@ function checkItemCollision(randomItem, cauldron) {
 }
 
 function gameOver(hasWon) {
-  clearInterval(intervalItems);
+  // remove the cauldron from th DOM if one already exist
+  if (cauldronObj && cauldronObj.node) {
+    cauldronObj.node.remove();
+  }
+
   gameOverScreen.style.display = 'flex';
   gameScreen.style.display = 'none';
 
   gameOverSound.play();
+  gameOverSound.currentTime = 0;
 
   bgSound.pause();
   bgSound.currentTime = 0;
 
   const result = showHoroscope(zodiacSelection, hasWon);
   horoscopeResult.textContent = result;
+
+  clearInterval(intervalItems);
+  clearInterval(intervalTimer);
 }
 
 function showHoroscope(sign, hasWon) {
-  const horoscopes = {
-    Aries: {
-      win: 'Your energy paid off! Only Mars is impressed.',
-      lose: 'Oops… maybe next time, don’t rush like a ram. Go to bed',
-    },
-    Taurus: {
-      win: 'You got it! Your stubbornness finally worked in your favor. Enjoy.',
-      lose: 'Relax… the couch forgives your mistakes. Eat soil and clean your feet',
-    },
-    Gemini: {
-      win: 'Double the fun! Gemini, you nailed it… You are the best, I love you.',
-      lose: 'Change of plans? Yep, that’s you. Try again next year',
-    },
-    Cancer: {
-      win: 'Heart and soul—perfect catch! Your moon is proud of you for once.',
-      lose: "It’s okay… cry, snack but don't try again, you are hopeless.",
-    },
-    Leo: {
-      win: 'You shine bright! Even the stars are trying to applaud you.',
-      lose: 'Roar! Not your day, breath and spit your gum',
-    },
-    Virgo: {
-      win: 'Precision pays off! Virgo efficiency level: expert. A least one area',
-      lose: 'Plan B… or C… maybe D? Stop trying, you are a piece of s***',
-    },
-    Libra: {
-      win: 'Balance achieved! Harmony and victory are yours. Cuba Libra. ',
-      lose: 'Can’t please everyone… but you can go f*** yourself',
-    },
-    Scorpio: {
-      win: 'Intuition strikes! Your secret Scorpio power works only on you.',
-      lose: 'Hmm… sabotage by destiny? Try again, cuttie',
-    },
-    Sagittarius: {
-      win: 'Adventure success! You caught it on the first try. Enjoy this unique victory',
-      lose: 'Wrong turn? Don’t worry, life goes on, swallow it',
-    },
-    Capricorn: {
-      win: 'Goal achieved! Your hard work paid off... or not.',
-      lose: "Effort counts… just not this time. Keep climbing and don't hurt yourlsef",
-    },
-    Aquarius: {
-      win: 'Brilliant idea, perfect execution! You’re a star with the martini.',
-      lose: 'Oops… genius moment postponed, usual day for you',
-    },
-    Pisces: {
-      win: 'Dreams do come true! Pisces magic works again. EAT SHRIMPES',
-      lose: 'Reality bites… you should get used to it.',
-    },
-  };
   const messages = horoscopes[sign];
   return hasWon ? messages.win : messages.lose;
 }
@@ -282,26 +230,20 @@ function waveTitle(title) {
   });
 }
 waveTitle(titleAnimation);
-
-//* EVENT LISTENER
-// show the rules screen after clicking next-btn
-zodiacBtn.addEventListener('click', () => {
+// to mute as well the items when clicking button. function call in function collisionItems()
+function playSound(sound) {
+  if (soundEnabled) {
+    sound.currentTime = 0;
+    sound.play();
+  }
+}
+function showZodiac() {
   if (zodiacSelection) {
     showScreen(rulesScreen);
   } else {
     alert('Please select your zodiac sign');
   }
-});
-// show the game after the rules and clicking btn
-startBtn.addEventListener('click', () => {
-  showScreen(gameScreen);
-  startGame();
-});
-restartBtn.addEventListener('click', () => {
-  showScreen(gameScreen);
-  replay();
-});
-/// select li when clicking + connexion with horoscope result
+}
 zodiacList.forEach((sign) => {
   sign.addEventListener('click', () => {
     zodiacList.forEach((li) => {
@@ -313,17 +255,33 @@ zodiacList.forEach((sign) => {
     console.log('selection', zodiacSelection);
   });
 });
+
+//* EVENT LISTENER
+// show the rules screen after clicking next-btn
+zodiacBtn.addEventListener('click', showZodiac);
+// show the game after the rules and clicking btn
+startBtn.addEventListener('click', () => {
+  showScreen(gameScreen);
+  startGame();
+});
+restartBtn.addEventListener('click', () => {
+  showScreen(gameScreen);
+  replay();
+});
+/// select li when clicking + connexion with horoscope result
+
 soundBtn.addEventListener('click', () => {
   soundEnabled = !soundEnabled;
 
   if (soundEnabled) {
-    bgSound.play(); // relance la musique si activée
+    bgSound.play();
     soundBtn.textContent = '🔊';
   } else {
-    bgSound.pause(); // pause la musique
+    bgSound.pause();
     soundBtn.textContent = '🔇';
   }
 });
+
 /// keypress
 document.addEventListener('keydown', (event) => {
   if (event.key === 'ArrowLeft') {
@@ -336,41 +294,3 @@ document.addEventListener('keydown', (event) => {
   //   zoneMove();
   // }
 });
-
-//! PLANNING SESSION
-/*
-//! ZODIAC 
-- li have to be connected with the horoscope ✅
-//! Cauldron object
-- properties (x, y, w, h, speed) ✅
-- keypress ✅
-
-//! ItemSpawn (set timer)
-- items always move down (from top to bottom) =  decrease y ✅
-- speed increase every 10sec✅
-- collision when item touch the cauldron (top and sides)✅
-- collision win item +1✅
-- collision neutral item -1✅
-- collision lose item -1 chance✅
-- collision number item detection for score✅
-- collision last lose item => game over✅
-
-
-//! Items objects
-- properties(x, y, x, h, speed) ✅
-- randomize the number of items per fall ✅
-- randomize the type of items ✅
-
-
-//! EXTRA FUNCTIONALITIES
-Mandatory
-- background sound ✅
-- restart btn✅
-- final release : horoscope✅
-- Letters (title and game over) and items moving ✅
-
-Bonus
-- collision sound✅
-
-
-*/
