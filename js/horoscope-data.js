@@ -29,7 +29,7 @@ const horoscopes = {
   },
   Scorpio: {
     win: 'Intuition strikes! Your secret Scorpio power works only on you.',
-    lose: 'Hmm… sabotage by destiny? Try again, cuttie',
+    lose: 'Hmm… sabotage by destiny? Try again, cutie',
   },
   Sagittarius: {
     win: 'Adventure success! You caught it on the first try. Enjoy this unique victory',

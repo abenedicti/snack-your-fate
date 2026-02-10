@@ -8,11 +8,7 @@
   );
 }
 
-/* *,
-*::before,
-*::after {
-  box-sizing: border-box;
-} */
+
 html,
 body {
   margin: 0;
@@ -25,10 +21,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url(../img/background.png); /* chemin vers ton image */
-  background-size: cover; /* l'image prend tout l'écran */
-  background-position: center; /* centre l'image */
-  background-repeat: no-repeat; /* pas de répétition */
+  background-image: url(../img/background.png); 
+  background-size: cover; /
+  background-position: center; 
+  background-repeat: no-repeat; 
   /* background: linear-gradient(
     304deg,
     rgba(1, 1, 31, 1) 66%,
@@ -98,7 +94,7 @@ button:hover {
 }
 
 .game-box {
-  position: absolute; /* toutes les sections superposées */
+  position: absolute; /
   overflow: hidden;
   display: none;
   flex-direction: column;
@@ -268,7 +264,7 @@ p {
 }
 
 #game-over {
-  /* display: none; */
+ 
   z-index: 0;
 }
 #game-over h2 {
