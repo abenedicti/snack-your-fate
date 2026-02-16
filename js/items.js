@@ -16,8 +16,6 @@ class Items {
 
     this.node = document.createElement('img');
     this.node.classList.add('responsive-items');
-    gameScreen.appendChild(this.node);
-
     gameScreen.append(this.node);
 
     this.width = 40;
